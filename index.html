@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <pre>[Thực hành] Di chuyển hình chữ nhật</pre>
+    <canvas id="gameCanvas" width="700" height="500" 
+            style="border: 1px solid black;
+            margin: 16px;">
+    </canvas>
+
+    <script>
+        let canvas = document.getElementById('gameCanvas');
+        let ctx = canvas.getContext('2d');
+
+        function moveCarGame(carYPosition, carXPosition, carWitdh, carHeight, topGame, bottomGame, leftGame, rightGame, color) {
+            let yDistance = 1;
+
+            function createCar() {
+                ctx.beginPath()
+                ctx.fillStyle = color
+                ctx.fillRect(carXPosition, carYPosition, carWitdh, carHeight)
+            }
+
+            function ctxClearRect() {
+                ctx.clearRect(carXPosition, carYPosition, carWitdh, carHeight)
+            }
+
+            function moveCarDown() {
+                ctxClearRect();
+                carYPosition++;
+                createCar()
+            }
+
+            function moveCarRight() {
+                ctxClearRect();
+                carXPosition++;
+                createCar();
+            }
+
+            function moveCarUp() {
+                ctxClearRect();
+                carYPosition--;
+                createCar();
+            }
+
+            function moveCarLeft() {
+                ctxClearRect();
+                carXPosition--;
+                createCar();
+            }
+
+            function moveCarAround() {
+                let isNotTouchBottom = carYPosition + carHeight < bottomGame;
+                let isNotTouchTop = carYPosition > topGame;
+                let isNotTouchRight = carXPosition + carWitdh < rightGame;
+                let isNotTouchLeft = carXPosition > bottomGame;
+
+                if (isNotTouchBottom && carXPosition === leftGame) {
+                    moveCarDown()
+                } else if (carYPosition + carHeight === bottomGame && isNotTouchRight) {
+                    moveCarRight()
+                } else if (carXPosition + carWitdh === rightGame && isNotTouchTop) {
+                    moveCarUp()
+                } else {
+                    moveCarLeft()
+                }
+            }
+            setInterval(moveCarAround, 1)
+        }
+
+
+        //carYPosition, carXPosition, carWitdh, carHeight, topGame, bottomGame, leftGame, rightGame, color
+        moveCarGame(0, 0, 199, 149, 0, 500, 0, 700, 'red');
+        moveCarGame(151, 201, 99, 99, 151, 349, 201, 499, 'blue');
+
+        ctx.strokeRect(200, 150, 300, 200)
+
+    </script>
+</body>
+
+</html>
